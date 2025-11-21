@@ -72,6 +72,16 @@ def live_process_data():
     if len(anomaly_logs) > MAX_LOGS:
         anomaly_logs = anomaly_logs[:MAX_LOGS]
 
+    # Filter out System Idle Process (PID 0) just in case
+    print(f"DEBUG: Before filter, count={len(df)}")
+    if 'pid' in df.columns:
+        df['pid'] = pd.to_numeric(df['pid'], errors='coerce')
+        df = df[df['pid'] != 0]
+    
+    if 'name' in df.columns:
+        df = df[df['name'] != 'System Idle Process']
+    print(f"DEBUG: After filter, count={len(df)}")
+
     # Convert to list of dicts for JSON
     # Handle NaN values for JSON compliance
     df = df.fillna(0)
@@ -93,4 +103,4 @@ def real_time_stats():
     return jsonify(system_history)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=False, port=5000)

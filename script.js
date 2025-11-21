@@ -194,8 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const chartHeight = height - padding * 2;
         const stepX = chartWidth / (data.length - 1);
 
-        // Max value (fixed to 100 for %)
-        const maxY = 100;
+        // Max value (Auto-scale for visibility, min 10%)
+        const maxData = Math.max(...data);
+        const maxY = Math.max(maxData * 1.2, 10);
 
         // Draw Line
         ctx.beginPath();

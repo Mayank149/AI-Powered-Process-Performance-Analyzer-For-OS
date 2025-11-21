@@ -39,6 +39,10 @@ def collect_metrics(system_cpu_percent, system_memory_percent):
 
     for pid in current_pids:
         try:
+            # Skip System Idle Process (PID 0 on Windows)
+            if pid == 0:
+                continue
+
             if pid not in PROCESS_CACHE:
                 PROCESS_CACHE[pid] = psutil.Process(pid)
                 # Initialize cpu_percent (returns 0.0 first time)
@@ -49,6 +53,13 @@ def collect_metrics(system_cpu_percent, system_memory_percent):
             # Check if process is still running
             if not process.is_running():
                 del PROCESS_CACHE[pid]
+                continue
+
+            # Double check name just in case
+            try:
+                if process.name() == 'System Idle Process':
+                    continue
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 continue
 
             metrics = process.as_dict(attrs=['pid', 'name', 'memory_percent', 'num_threads', 'name'])
