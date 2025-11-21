@@ -59,6 +59,12 @@ def live_process_data():
 def log_stream():
     return jsonify(anomaly_logs)
 
+@app.route('/clear-logs', methods=['POST'])
+def clear_logs():
+    global anomaly_logs
+    anomaly_logs = []
+    return jsonify({"status": "cleared"})
+
 @app.route('/forecast')
 def forecast():
     # Mock forecast data for now (or simple projection)

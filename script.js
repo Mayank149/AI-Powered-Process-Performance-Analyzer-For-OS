@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     btnRefresh.addEventListener('click', fetchData);
-    
+
     btnClear.addEventListener('click', () => {
         tableBody.innerHTML = '';
         processCount.textContent = '0 processes';
@@ -41,9 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initial Load
-    fetchData();
-    fetchLogs();
-    fetchForecast();
+    // Clear logs on reload as requested
+    fetch('/clear-logs', { method: 'POST' })
+        .then(() => {
+            fetchData();
+            fetchLogs();
+            fetchForecast();
+        })
+        .catch(err => console.error('Error clearing logs:', err));
 
     // Intervals
     setInterval(fetchData, 2000);
@@ -94,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTable() {
         // Filter logic
         let filtered = processes;
-        
+
         // If both unchecked, show all. If one checked, show that type.
         // Note: "User" vs "System" is a bit ambiguous in cross-platform psutil.
         // We'll use a heuristic: System usually has low PIDs or specific names, 
@@ -103,18 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Since the backend doesn't explicitly send "type", let's use a simple heuristic:
         // System: PID < 1000 (on Linux/Mac) or specific names.
         // For Windows, it's harder. Let's just assume all are shown unless filtered.
-        
+
         // Actually, let's implement the requested logic:
         // "Checkbox: show only user processes"
         // "Checkbox: show only system processes"
         // "If both are unchecked, show all processes"
-        
+
         if (filterUser || filterSystem) {
             filtered = processes.filter(p => {
                 // Simple heuristic for demo purposes
                 // In reality, you'd check p.username() from psutil
                 const isSystem = p.pid < 1000 || ['System', 'Registry', 'smss.exe', 'csrss.exe', 'wininit.exe', 'services.exe', 'lsass.exe'].includes(p.name);
-                
+
                 if (filterUser && filterSystem) return true; // Both checked = show all? Or intersection? Usually union.
                 if (filterUser && !isSystem) return true;
                 if (filterSystem && isSystem) return true;
@@ -128,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isAnomaly = p.anomaly_label === -1;
             const rowClass = isAnomaly ? 'anomaly-row' : '';
             const status = isAnomaly ? 'ANOMALY' : 'Normal';
-            
+
             return `
                 <tr class="${rowClass}">
                     <td>${p.pid}</td>
@@ -155,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }).join('');
-        
+
         logWindow.innerHTML = html;
     }
 
@@ -165,46 +170,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = canvas.getContext('2d');
         const width = canvas.width = canvas.offsetWidth;
         const height = canvas.height = canvas.offsetHeight;
-        
+
         // Clear
         ctx.clearRect(0, 0, width, height);
-        
+
         // Config
         const padding = 20;
         const chartWidth = width - padding * 2;
         const chartHeight = height - padding * 2;
         const stepX = chartWidth / (data.length - 1);
-        
+
         // Max value (fixed to 100 for %)
         const maxY = 100;
-        
+
         // Draw Line
         ctx.beginPath();
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
-        
+
         data.forEach((val, i) => {
             const x = padding + i * stepX;
             const y = height - padding - (val / maxY * chartHeight);
-            
+
             if (i === 0) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
         });
-        
+
         ctx.stroke();
-        
+
         // Draw Fill
         ctx.lineTo(padding + (data.length - 1) * stepX, height - padding);
         ctx.lineTo(padding, height - padding);
         ctx.fillStyle = color + '20'; // Low opacity
         ctx.fill();
-        
+
         // Draw Points
         ctx.fillStyle = color;
         data.forEach((val, i) => {
             const x = padding + i * stepX;
             const y = height - padding - (val / maxY * chartHeight);
-            
+
             ctx.beginPath();
             ctx.arc(x, y, 3, 0, Math.PI * 2);
             ctx.fill();
@@ -227,19 +232,19 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("No logs to download");
             return;
         }
-        
+
         const headers = ["Timestamp", "PID", "Name", "Anomaly Score", "Details"];
         const csvContent = [
             headers.join(","),
             ...logs.map(log => [
-                log.timestamp, 
-                log.pid, 
-                log.name, 
-                log.anomaly_score, 
+                log.timestamp,
+                log.pid,
+                log.name,
+                log.anomaly_score,
                 `"${log.details}"`
             ].join(","))
         ].join("\n");
-        
+
         const blob = new Blob([csvContent], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
