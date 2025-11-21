@@ -20,7 +20,7 @@ ML_FEATURES = [
     'read_speed', 'write_speed'
 ]
 REQUIRED_FEATURES = ML_FEATURES + ['name', 'pid', 'timestamp']
-ANOMALY_THRESHOLD = -0.25  # Fixed threshold: only scores below this are flagged
+ANOMALY_THRESHOLD = -0.29  # Fixed threshold: only scores below this are flagged
 
 print("--- Starting Local Model Verification ---")
 
