@@ -92,7 +92,7 @@ def live_detection_cycle(model):
     system_cpu_initial = psutil.cpu_percent(interval=None) 
     system_mem = psutil.virtual_memory().percent
     
-    time.sleep(0.1) 
+    time.sleep(0.2) 
     
     system_cpu = psutil.cpu_percent(interval=None) 
     

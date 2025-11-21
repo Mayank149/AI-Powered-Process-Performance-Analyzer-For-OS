@@ -11,6 +11,13 @@ app = Flask(__name__, static_folder='.')
 anomaly_logs = []
 MAX_LOGS = 1000
 
+# Store system history
+system_history = {
+    "cpu": [],
+    "memory": []
+}
+MAX_HISTORY = 30 # Keep last 30 points (e.g. 60 seconds if 2s interval)
+
 @app.route('/')
 def index():
     return send_from_directory('.', 'index.html')
@@ -21,13 +28,28 @@ def serve_static(path):
 
 @app.route('/live-process-data')
 def live_process_data():
-    global anomaly_logs
+    global anomaly_logs, system_history
     
     # Use the model from anomaly.py
     if anomaly.INFERENCE_MODEL is None:
         return jsonify({"error": "Model not loaded"}), 500
 
     df = anomaly.live_detection_cycle(anomaly.INFERENCE_MODEL)
+    
+    # Update system history
+    import psutil
+    current_cpu = psutil.cpu_percent()
+    current_mem = psutil.virtual_memory().percent
+    
+    print(f"DEBUG: CPU={current_cpu}, Mem={current_mem}") # Debug print
+    
+    system_history["cpu"].append(current_cpu)
+    system_history["memory"].append(current_mem)
+    print(f"DEBUG: History len={len(system_history['cpu'])}") # Debug print
+    
+    if len(system_history["cpu"]) > MAX_HISTORY:
+        system_history["cpu"].pop(0)
+        system_history["memory"].pop(0)
     
     if df is None or df.empty:
         return jsonify([])
@@ -66,29 +88,9 @@ def clear_logs():
     return jsonify({"status": "cleared"})
 
 @app.route('/forecast')
-def forecast():
-    # Mock forecast data for now (or simple projection)
-    # In a real app, this would use a time-series model
-    # Returning 15 seconds of predicted data points (every 5s)
-    
-    future_steps = 3 # 15 seconds / 5 seconds
-    
-    # Get current system stats as baseline
-    import psutil
-    current_cpu = psutil.cpu_percent()
-    current_mem = psutil.virtual_memory().percent
-    
-    forecast_data = {
-        "cpu": [],
-        "memory": []
-    }
-    
-    # Generate some slightly noisy projection
-    for i in range(future_steps):
-        forecast_data["cpu"].append(min(100, max(0, current_cpu + np.random.normal(0, 5))))
-        forecast_data["memory"].append(min(100, max(0, current_mem + np.random.normal(0, 2))))
-        
-    return jsonify(forecast_data)
+def real_time_stats():
+    # Renamed logic, keeping endpoint name to avoid breaking frontend fetch
+    return jsonify(system_history)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
