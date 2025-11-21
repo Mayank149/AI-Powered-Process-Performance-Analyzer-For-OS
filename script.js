@@ -30,13 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnDownload.addEventListener('click', downloadLogs);
 
-    checkUser.addEventListener('change', (e) => {
-        filterUser = e.target.checked;
+    checkUser.addEventListener('click', () => {
+        filterUser = !filterUser;
+        checkUser.classList.toggle('active');
         renderTable();
     });
 
-    checkSystem.addEventListener('change', (e) => {
-        filterSystem = e.target.checked;
+    checkSystem.addEventListener('click', () => {
+        filterSystem = !filterSystem;
+        checkSystem.classList.toggle('active');
         renderTable();
     });
 

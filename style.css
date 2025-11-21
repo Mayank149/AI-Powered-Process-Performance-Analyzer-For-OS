@@ -74,44 +74,43 @@ h3 {
     gap: 0.75rem;
 }
 
-.checkbox-container {
+/* Filter Buttons */
+.filter-buttons {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    user-select: none;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.checkbox-container input {
-    display: none;
-}
-
-.checkmark {
-    width: 18px;
-    height: 18px;
-    background-color: var(--bg-card);
+.filter-btn {
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
     border: 1px solid var(--border);
-    border-radius: 4px;
+    background-color: var(--bg-card);
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
     position: relative;
-    transition: all 0.2s;
 }
 
-.checkbox-container input:checked ~ .checkmark {
-    background-color: var(--accent);
+.filter-btn:hover {
+    background-color: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background-color: rgba(59, 130, 246, 0.15);
     border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
 }
 
-.checkbox-container input:checked ~ .checkmark::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    width: 4px;
-    height: 8px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+.filter-btn.active:hover {
+    background-color: rgba(59, 130, 246, 0.2);
 }
 
 /* Buttons */
@@ -159,7 +158,8 @@ h3 {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    min-height: 0; /* Fix flex overflow */
+    min-height: 0;
+    /* Fix flex overflow */
 }
 
 .log-window {
@@ -175,7 +175,7 @@ h3 {
 
 .log-entry {
     padding: 0.4rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     color: var(--text-secondary);
 }
 
@@ -275,7 +275,7 @@ td {
 }
 
 tr:hover td {
-    background-color: rgba(255,255,255,0.02);
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
 /* Anomaly Highlight */
@@ -309,7 +309,15 @@ tr.anomaly-row td:last-child {
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-    70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
 }
