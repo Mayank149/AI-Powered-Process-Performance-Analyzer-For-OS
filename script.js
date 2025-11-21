@@ -59,6 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchData() {
         if (isPaused) return;
+
+        // Visual feedback for manual refresh
+        const originalText = btnRefresh.textContent;
+        if (originalText !== 'Refreshing...') {
+            btnRefresh.textContent = 'Refreshing...';
+            btnRefresh.disabled = true;
+        }
+
         try {
             const res = await fetch('/live-process-data');
             const data = await res.json();
@@ -66,6 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
             renderTable();
         } catch (err) {
             console.error('Error fetching process data:', err);
+        } finally {
+            // Restore button state
+            if (btnRefresh.textContent === 'Refreshing...') {
+                btnRefresh.textContent = 'Refresh Now';
+                btnRefresh.disabled = false;
+            }
         }
     }
 
