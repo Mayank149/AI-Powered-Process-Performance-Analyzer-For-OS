@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Process Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>AI Analyzer</h2>
+                <span class="status-dot"></span>
+            </div>
+
+            <div class="control-group">
+                <h3>Filters</h3>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="filter-user">
+                    <span class="checkmark"></span>
+                    User Processes
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="filter-system">
+                    <span class="checkmark"></span>
+                    System Processes
+                </label>
+            </div>
+
+            <div class="control-group">
+                <h3>Actions</h3>
+                <button id="btn-refresh" class="btn primary">Refresh Now</button>
+                <button id="btn-clear" class="btn secondary">Clear Table</button>
+                <button id="btn-download" class="btn outline">Download Logs</button>
+            </div>
+
+            <div class="log-section">
+                <h3>Anomaly Logs</h3>
+                <div id="log-window" class="log-window">
+                    <!-- Logs will be injected here -->
+                    <div class="log-entry placeholder">Waiting for data...</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Forecast Section -->
+            <section class="forecast-section">
+                <div class="card forecast-card">
+                    <h3>CPU Forecast (15s)</h3>
+                    <canvas id="cpu-chart" height="150"></canvas>
+                </div>
+                <div class="card forecast-card">
+                    <h3>Memory Forecast (15s)</h3>
+                    <canvas id="mem-chart" height="150"></canvas>
+                </div>
+            </section>
+
+            <!-- Live Process Table -->
+            <section class="table-section card">
+                <div class="table-header">
+                    <h3>Live Processes</h3>
+                    <span id="process-count" class="badge">0 processes</span>
+                </div>
+                <div class="table-wrapper">
+                    <table id="process-table">
+                        <thead>
+                            <tr>
+                                <th>PID</th>
+                                <th>Name</th>
+                                <th>CPU %</th>
+                                <th>Mem %</th>
+                                <th>Threads</th>
+                                <th>Read (B)</th>
+                                <th>Write (B)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
