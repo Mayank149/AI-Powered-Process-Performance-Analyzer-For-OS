@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, width, height);
 
         // Config
-        const padding = 20;
+        const padding = 30; // Increased padding for labels
         const chartWidth = width - padding * 2;
         const chartHeight = height - padding * 2;
         const stepX = chartWidth / (data.length - 1);
@@ -209,6 +209,39 @@ document.addEventListener('DOMContentLoaded', () => {
         // Max value (Auto-scale for visibility, min 10%)
         const maxData = Math.max(...data);
         const maxY = Math.max(maxData * 1.2, 10);
+
+        // Draw Axes
+        ctx.beginPath();
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        // Y Axis
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, height - padding);
+        // X Axis
+        ctx.lineTo(width - padding, height - padding);
+        ctx.stroke();
+
+        // Axis Labels
+        ctx.fillStyle = '#fff';
+        ctx.font = '10px Inter';
+        ctx.textAlign = 'center';
+        ctx.fillText('Time', width / 2, height - 5);
+
+        ctx.save();
+        ctx.translate(10, height / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillText('Usage %', 0, 0);
+        ctx.restore();
+
+        // Current Value (Top Right)
+        if (data.length > 0) {
+            const currentVal = data[data.length - 1];
+            ctx.fillStyle = color;
+            ctx.font = 'bold 14px Inter';
+            ctx.textAlign = 'right';
+            ctx.fillText(`${currentVal.toFixed(1)}%`, width - 10, 20);
+        }
 
         // Draw Line
         ctx.beginPath();
