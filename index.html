@@ -106,31 +106,85 @@
             <!-- Forecast Section (Now Real-time) -->
             <section class="forecast-section">
                 <div class="card forecast-card">
-                    <h3>CPU Usage (Real-time)</h3>
-                    <canvas id="cpu-chart" height="150"></canvas>
+                    <h3>
+                        <svg class="chart-heading-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        CPU Usage (Real-time)
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="cpu-chart" height="150"></canvas>
+                    </div>
                 </div>
                 <div class="card forecast-card">
-                    <h3>Memory Usage (Real-time)</h3>
-                    <canvas id="mem-chart" height="150"></canvas>
+                    <h3>
+                        <svg class="chart-heading-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        Memory Usage (Real-time)
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="mem-chart" height="150"></canvas>
+                    </div>
                 </div>
             </section>
 
             <!-- Forecasted Metrics -->
             <section class="forecast-section">
                 <div class="card forecast-card">
-                    <h3>Forecasted CPU (Next Step)</h3>
-                    <canvas id="forecast-cpu-chart" height="150"></canvas>
+                    <h3>
+                        <svg class="chart-heading-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        Forecasted CPU (Next Step)
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="forecast-cpu-chart" height="150"></canvas>
+                    </div>
                 </div>
                 <div class="card forecast-card">
-                    <h3>Forecasted Memory (Next Step)</h3>
-                    <canvas id="forecast-mem-chart" height="150"></canvas>
+                    <h3>
+                        <svg class="chart-heading-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        Forecasted Memory (Next Step)
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="forecast-mem-chart" height="150"></canvas>
+                    </div>
                 </div>
             </section>
 
             <!-- Live Process Table -->
             <section class="table-section card">
                 <div class="table-header">
-                    <h3>Live Processes</h3>
+                    <div class="table-title">
+                        <svg class="table-title-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        <h3>Live Processes</h3>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" id="process-search" class="search-input" placeholder="Search processes...">
+                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
                     <span id="process-count" class="badge">0 processes</span>
                 </div>
                 <div class="table-wrapper">

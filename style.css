@@ -343,7 +343,7 @@ h3 {
 }
 
 .forecast-card {
-    min-height: 200px;
+    min-height: 280px;
     display: flex;
     flex-direction: column;
 }
@@ -351,12 +351,37 @@ h3 {
 .forecast-card h3 {
     margin-bottom: 0.75rem;
     flex-shrink: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.chart-heading-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.chart-container {
+    flex-grow: 1;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .forecast-card canvas {
-    flex-grow: 1;
     display: block;
     min-height: 150px;
+    width: 100% !important;
+    height: auto !important;
 }
 
 canvas {
@@ -372,11 +397,70 @@ canvas {
     min-height: 400px;
 }
 
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.table-title h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.table-title-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
 .table-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.search-container {
+    position: relative;
+    flex: 0 0 auto;
+    width: 250px;
+    margin-left: auto;
+    margin-right: 3rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--border-highlight);
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
 }
 
 .badge {

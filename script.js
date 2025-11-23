@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let filterUser = false;
     let filterSystem = false;
     let isPaused = false;
+    let searchQuery = '';
 
     // Elements
     const tableBody = document.querySelector('#process-table tbody');
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnDownload = document.getElementById('btn-download');
     const checkUser = document.getElementById('filter-user');
     const checkSystem = document.getElementById('filter-system');
+    const searchInput = document.getElementById('process-search');
 
     // Charts
     const cpuCanvas = document.getElementById('cpu-chart');
@@ -55,6 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
             checkUser.classList.remove('active');
         }
 
+        renderTable();
+    });
+
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
         renderTable();
     });
 
@@ -154,6 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // "Checkbox: show only system processes"
         // "If both are unchecked, show all processes"
 
+        // Search filter
+        if (searchQuery) {
+            filtered = filtered.filter(p =>
+                p.name.toLowerCase().includes(searchQuery)
+            );
+        }
+
+        // User/System filter
         if (filterUser || filterSystem) {
             filtered = processes.filter(p => {
                 // Strict User App Filter
