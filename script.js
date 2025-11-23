@@ -142,13 +142,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filterUser || filterSystem) {
             filtered = processes.filter(p => {
-                // Simple heuristic for demo purposes
-                // In reality, you'd check p.username() from psutil
-                const isSystem = p.pid < 1000 || ['System', 'Registry', 'smss.exe', 'csrss.exe', 'wininit.exe', 'services.exe', 'lsass.exe'].includes(p.name);
+                // Strict User App Filter
+                // User wants ONLY apps (Chrome, Antigravity, etc.) in User Processes
+                // Everything else goes to System
 
-                if (filterUser && filterSystem) return true; // Both checked = show all? Or intersection? Usually union.
-                if (filterUser && !isSystem) return true;
-                if (filterSystem && isSystem) return true;
+                const name = p.name.toLowerCase();
+                const userAppKeywords = [
+                    'chrome', 'firefox', 'edge', 'brave', 'opera', 'safari', // Browsers
+                    'code', 'studio', 'sublime', 'notepad', 'word', 'excel', 'powerpoint', // Productivity
+                    'discord', 'spotify', 'slack', 'teams', 'zoom', // Communication
+                    'antigravity', 'python', 'node', 'java', 'ruby', 'go', // Dev tools (including this app)
+                    'steam', 'epic', 'game', // Games
+                    'vlc', 'obs', 'adobe' // Media
+                ];
+
+                const isUserApp = userAppKeywords.some(keyword => name.includes(keyword));
+
+                // Debug log
+                console.log(`Process: ${name}, isUserApp: ${isUserApp}`);
+
+                // If filterUser is ON, we show ONLY User Apps
+                // If filterSystem is ON, we show ONLY System (Non-User Apps)
+                // If BOTH are ON, we show ALL (Union)
+                // If NEITHER are ON, we show ALL (Default)
+
+                if (!filterUser && !filterSystem) return true; // Show all
+                if (filterUser && filterSystem) return true;   // Show all
+
+                if (filterUser && isUserApp) return true;
+                if (filterSystem && !isUserApp) return true;
+
                 return false;
             });
         }
