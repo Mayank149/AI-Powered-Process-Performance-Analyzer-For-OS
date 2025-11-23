@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Process Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>AI System Analyzer</h2>
+                <span class="status-dot"></span>
+            </div>
+
+            <div class="control-container">
+                <div class="control-title">
+                    <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                    Filters
+                </div>
+                <div class="control-content filter-buttons">
+                    <button id="filter-user" class="filter-btn">
+                        User Processes
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </button>
+                    <button id="filter-system" class="filter-btn">
+                        System Processes
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="control-container">
+                <div class="control-title">
+                    <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                    Actions
+                </div>
+                <div class="control-content action-buttons">
+                    <button id="btn-refresh" class="btn primary" style="display: none;">Refresh Now</button>
+                    <button id="btn-clear" class="btn secondary">
+                        Clear Table
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </button>
+                    <button id="btn-download" class="btn outline">
+                        Download Logs
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="log-section">
+                <div class="log-container">
+                    <div class="log-title">
+                        <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        Anomaly Logs
+                    </div>
+                    <div id="log-window" class="log-window">
+                        <!-- Logs will be injected here -->
+                        <div class="log-entry placeholder">Waiting for data...</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Forecast Section (Now Real-time) -->
+            <section class="forecast-section">
+                <div class="card forecast-card">
+                    <h3>CPU Usage (Real-time)</h3>
+                    <canvas id="cpu-chart" height="150"></canvas>
+                </div>
+                <div class="card forecast-card">
+                    <h3>Memory Usage (Real-time)</h3>
+                    <canvas id="mem-chart" height="150"></canvas>
+                </div>
+            </section>
+
+            <!-- Forecasted Metrics -->
+            <section class="forecast-section">
+                <div class="card forecast-card">
+                    <h3>Forecasted CPU (Next Step)</h3>
+                    <canvas id="forecast-cpu-chart" height="150"></canvas>
+                </div>
+                <div class="card forecast-card">
+                    <h3>Forecasted Memory (Next Step)</h3>
+                    <canvas id="forecast-mem-chart" height="150"></canvas>
+                </div>
+            </section>
+
+            <!-- Live Process Table -->
+            <section class="table-section card">
+                <div class="table-header">
+                    <h3>Live Processes</h3>
+                    <span id="process-count" class="badge">0 processes</span>
+                </div>
+                <div class="table-wrapper">
+                    <table id="process-table">
+                        <thead>
+                            <tr>
+                                <th>PID</th>
+                                <th>Name</th>
+                                <th>CPU %</th>
+                                <th>Mem %</th>
+                                <th>Threads</th>
+                                <th>Read (B)</th>
+                                <th>Write (B)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
