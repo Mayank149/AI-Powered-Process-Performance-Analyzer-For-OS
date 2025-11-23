@@ -65,7 +65,9 @@ def collect_metrics(system_cpu_percent, system_memory_percent):
             metrics = process.as_dict(attrs=['pid', 'name', 'memory_percent', 'num_threads', 'name'])
             
             # Non-blocking call. Returns 0.0 on first call (handled above), valid value on subsequent calls
-            metrics['cpu_percent'] = process.cpu_percent(interval=None)
+            # Normalize to per-core percentage (divide by CPU count to keep it 0-100%)
+            cpu_count = psutil.cpu_count() or 1
+            metrics['cpu_percent'] = process.cpu_percent(interval=None) / cpu_count
 
             cpu_times = process.cpu_times()
             mem_info = process.memory_info()
