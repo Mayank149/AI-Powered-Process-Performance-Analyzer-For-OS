@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Charts
     const cpuCanvas = document.getElementById('cpu-chart');
     const memCanvas = document.getElementById('mem-chart');
+    const forecastCpuCanvas = document.getElementById('forecast-cpu-chart');
+    const forecastMemCanvas = document.getElementById('forecast-mem-chart');
 
     // Event Listeners
     btnRefresh.addEventListener('click', fetchData);
@@ -103,8 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch('/forecast');
             const data = await res.json();
-            drawChart(cpuCanvas, data.cpu, 'CPU %', '#3b82f6');
-            drawChart(memCanvas, data.memory, 'Memory %', '#8b5cf6');
+
+            if (data.realtime) {
+                drawChart(cpuCanvas, data.realtime.cpu, 'CPU %', '#3b82f6');
+                drawChart(memCanvas, data.realtime.memory, 'Memory %', '#8b5cf6');
+            }
+
+            if (data.forecast) {
+                drawChart(forecastCpuCanvas, data.forecast.cpu, 'Forecast CPU %', '#10b981');
+                drawChart(forecastMemCanvas, data.forecast.memory, 'Forecast Memory %', '#f59e0b');
+            }
         } catch (err) {
             console.error('Error fetching forecast:', err);
         }

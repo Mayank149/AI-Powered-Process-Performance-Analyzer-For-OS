@@ -213,12 +213,26 @@ h3 {
     gap: 1.5rem;
 }
 
+.forecast-card {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
 .forecast-card h3 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-shrink: 0;
+}
+
+.forecast-card canvas {
+    flex-grow: 1;
+    display: block;
+    min-height: 150px;
 }
 
 canvas {
     width: 100% !important;
+    height: auto !important;
 }
 
 /* Table */

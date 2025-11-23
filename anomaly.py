@@ -125,9 +125,9 @@ def live_detection_cycle(model):
     if not anomalies.empty:
         critical_anomalies = anomalies.sort_values(by='anomaly_score').head(5)
         
-        print("\n--- IMMEDIATE BOTTLENECK DETECTED (Top 5) ---")
-        print(f"Time: {time.strftime('%H:%M:%S')}")
-        print(critical_anomalies[['name', 'pid', 'cpu_percent', 'memory_percent', 'anomaly_score']])
+        # print("\n--- IMMEDIATE BOTTLENECK DETECTED (Top 5) ---")
+        # print(f"Time: {time.strftime('%H:%M:%S')}")
+        # print(critical_anomalies[['name', 'pid', 'cpu_percent', 'memory_percent', 'anomaly_score']])
         
     return raw_df
 
@@ -188,7 +188,7 @@ ensure_model_and_data()
 
 if __name__ == "__main__":
     print("\nInitiating continuous monitoring on your local system. Verify the model's power.")
-    print("Press Ctrl+C in your terminal to cease operation.")
+    # print("Press Ctrl+C in your terminal to cease operation.")
 
     monitoring_cycles = 0
     try:
