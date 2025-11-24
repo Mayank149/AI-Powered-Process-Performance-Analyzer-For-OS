@@ -11,11 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('#process-table tbody');
     const processCount = document.getElementById('process-count');
     const logWindow = document.getElementById('log-window');
-    const btnRefresh = document.getElementById('btn-refresh');
-    const btnClear = document.getElementById('btn-clear');
-    const btnDownload = document.getElementById('btn-download');
-    const checkUser = document.getElementById('filter-user');
-    const checkSystem = document.getElementById('filter-system');
     const searchInput = document.getElementById('process-search');
 
     // Charts
@@ -25,40 +20,82 @@ document.addEventListener('DOMContentLoaded', () => {
     const forecastMemCanvas = document.getElementById('forecast-mem-chart');
 
     // Event Listeners
-    btnRefresh.addEventListener('click', fetchData);
 
-    btnClear.addEventListener('click', () => {
-        tableBody.innerHTML = '';
-        processCount.textContent = '0 processes';
-    });
 
-    btnDownload.addEventListener('click', downloadLogs);
+    const btnClearHeader = document.getElementById('btn-clear-table-header');
+    if (btnClearHeader) {
+        btnClearHeader.addEventListener('click', () => {
+            tableBody.innerHTML = '';
+            processCount.textContent = '0 processes';
+        });
+    }
 
-    checkUser.addEventListener('click', () => {
-        filterUser = !filterUser;
-        checkUser.classList.toggle('active');
 
-        // Deactivate system filter if user filter is activated
-        if (filterUser && filterSystem) {
-            filterSystem = false;
-            checkSystem.classList.remove('active');
-        }
 
-        renderTable();
-    });
+    const btnDownloadHeader = document.getElementById('btn-download-logs-header');
+    if (btnDownloadHeader) {
+        btnDownloadHeader.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent bubbling if needed
+            downloadLogs();
+        });
+    }
 
-    checkSystem.addEventListener('click', () => {
-        filterSystem = !filterSystem;
-        checkSystem.classList.toggle('active');
+    // Dropdown Logic
+    const btnFilterDropdown = document.getElementById('btn-filter-dropdown');
+    const dropdownMenu = document.getElementById('filter-dropdown-menu');
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
 
-        // Deactivate user filter if system filter is activated
-        if (filterSystem && filterUser) {
-            filterUser = false;
-            checkUser.classList.remove('active');
-        }
+    if (btnFilterDropdown && dropdownMenu) {
+        btnFilterDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
 
-        renderTable();
-    });
+        document.addEventListener('click', (e) => {
+            if (!dropdownMenu.contains(e.target) && !btnFilterDropdown.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const filterType = item.dataset.filter;
+
+                if (filterType === 'user') {
+                    filterUser = !filterUser;
+                    // Mutually exclusive logic
+                    if (filterUser && filterSystem) {
+                        filterSystem = false;
+                    }
+                } else if (filterType === 'system') {
+                    filterSystem = !filterSystem;
+                    // Mutually exclusive logic
+                    if (filterSystem && filterUser) {
+                        filterUser = false;
+                    }
+                }
+
+                updateDropdownUI();
+                renderTable();
+            });
+        });
+    }
+
+    function updateDropdownUI() {
+        dropdownItems.forEach(item => {
+            const filterType = item.dataset.filter;
+            if (filterType === 'user') {
+                if (filterUser) item.classList.add('active');
+                else item.classList.remove('active');
+            } else if (filterType === 'system') {
+                if (filterSystem) item.classList.add('active');
+                else item.classList.remove('active');
+            }
+        });
+    }
+
+
 
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value.toLowerCase();
@@ -86,11 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isPaused) return;
 
         // Visual feedback for manual refresh
-        const originalText = btnRefresh.textContent;
-        if (originalText !== 'Refreshing...') {
-            btnRefresh.textContent = 'Refreshing...';
-            btnRefresh.disabled = true;
-        }
+        // const originalText = btnRefresh.textContent;
+        // if (originalText !== 'Refreshing...') {
+        //     btnRefresh.textContent = 'Refreshing...';
+        //     btnRefresh.disabled = true;
+        // }
 
         try {
             const res = await fetch('/live-process-data');
@@ -101,10 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching process data:', err);
         } finally {
             // Restore button state
-            if (btnRefresh.textContent === 'Refreshing...') {
-                btnRefresh.textContent = 'Refresh Now';
-                btnRefresh.disabled = false;
-            }
+            // if (btnRefresh.textContent === 'Refreshing...') {
+            //     btnRefresh.textContent = 'Refresh Now';
+            //     btnRefresh.disabled = false;
+            // }
         }
     }
 
@@ -170,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // User/System filter
         if (filterUser || filterSystem) {
-            filtered = processes.filter(p => {
+            filtered = filtered.filter(p => {
                 // Strict User App Filter
                 // User wants ONLY apps (Chrome, Antigravity, etc.) in User Processes
                 // Everything else goes to System

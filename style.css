@@ -121,7 +121,7 @@ h3 {
     border-bottom: 1px solid var(--border-highlight);
     border-left: 4px solid transparent;
     background-color: var(--bg-card);
-    color: var(--accent);
+    color: var(--text-secondary);
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -140,8 +140,8 @@ h3 {
 }
 
 .filter-btn:hover {
-    background-color: rgba(59, 130, 246, 0.05);
-    color: var(--accent-hover);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
 }
 
 .filter-btn.active {
@@ -168,7 +168,7 @@ h3 {
     width: 100%;
     text-align: left;
     background-color: var(--bg-card);
-    color: var(--accent);
+    color: var(--text-secondary);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -208,13 +208,42 @@ h3 {
     font-weight: 600;
     color: var(--text-primary);
     background-color: rgba(30, 58, 138, 0.2);
-    /* Dark blue bg for title */
+    padding: 1rem;
+    background-color: rgba(30, 58, 138, 0.2);
     border-bottom: 1px solid var(--border-highlight);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.log-title-left {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+.header-action-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    /* Changed to white/primary text color */
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.7;
+    /* Slight opacity to make it subtle but white */
+}
+
+.header-action-btn:hover {
+    color: var(--text-primary);
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .log-header-row {
@@ -425,11 +454,73 @@ canvas {
     gap: 1rem;
 }
 
+.filter-dropdown-container {
+    position: relative;
+    margin-left: auto;
+    /* Push to right, before search */
+    margin-right: 0.5rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-highlight);
+    border-radius: 6px;
+    padding: 0.5rem;
+    min-width: 180px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 50;
+    display: none;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 0.5rem 0.75rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--text-primary);
+}
+
+.dropdown-item.active {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+    font-weight: 500;
+}
+
+.check-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-item.active .check-icon::after {
+    content: "✓";
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
 .search-container {
     position: relative;
     flex: 0 0 auto;
     width: 250px;
-    margin-left: auto;
     margin-right: 3rem;
 }
 
