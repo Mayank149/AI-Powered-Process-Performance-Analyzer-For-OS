@@ -21,7 +21,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-dark);
+    background: linear-gradient(90deg, #000000 0%, #100e35 70%, #03144a 100%);
     color: var(--text-primary);
     height: 100vh;
     overflow: hidden;
