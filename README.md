@@ -55,6 +55,6 @@ The **AI Powered Performance Analyzer** is a sophisticated system monitoring too
 
 This project was developed by:
 
--   **Mayank Bansal**
--   **Surya**
--   **Lukshya**
+-   **Mayank Bansal** - https://www.linkedin.com/in/mayank-bansal14/
+-   **Surya Narayan Battula** - https://www.linkedin.com/in/suryanarayanbattula/
+-   **Lukshya Supyal** - https://www.linkedin.com/in/lukshya-supyal2006/
