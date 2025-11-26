@@ -375,6 +375,12 @@ h3 {
     min-height: 280px;
     display: flex;
     flex-direction: column;
+    background: rgba(30, 41, 59, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.25rem;
 }
 
 .forecast-card h3 {
@@ -397,8 +403,10 @@ h3 {
 
 .chart-container {
     flex-grow: 1;
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border);
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     padding: 2rem;
     display: flex;
