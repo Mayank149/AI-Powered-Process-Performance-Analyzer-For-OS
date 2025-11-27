@@ -29,7 +29,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 import os
 
-# Configuration Constants
+# Configuration the Constants
 DATA_FILE = 'process_metrics.csv'
 MODEL_FILE = 'forecast_model.joblib'
 
