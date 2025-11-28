@@ -91,7 +91,12 @@ def collect_metrics(system_cpu_percent, system_memory_percent):
             continue
             
     df = pd.DataFrame(records)
-    return df[[col for col in REQUIRED_FEATURES if col in df.columns]]
+    wanted_columns = REQUIRED_FEATURES
+    valid_columns = []
+    for col in wanted_columns:
+        if col in df.columns:
+            valid_columns.append(col)
+    return df[valid_columns]
 
 
 
